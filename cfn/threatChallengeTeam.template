@@ -1,0 +1,151 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "",
+  "Parameters" : {
+    "TeamName" : {
+      "Type" : "String"
+    },
+    "BaseUrl" : {
+      "Type" : "String",
+      "Default" : "https://s3.amazonaws.com/trendctf/cfn/"
+    },
+    "AWSIKeyPairName" : {
+      "Type" : "AWS::EC2::KeyPair::KeyName",
+      "Default" : "threatChallengeKeyPair"
+    },
+    "DeepSecurityAdminName"         : {
+      "Default" : "MasterAdmin",
+      "NoEcho"  : false,
+      "Description" : "The Deep Security Manager administrator username for Web Console Access.",
+      "Type"        : "String",
+      "MinLength"   : 1,
+      "MaxLength"   : 16,
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "Must begin with a letter and contain only alphanumeric characters. Min length 1, max length 16"
+    },
+    "DeepSecurityAdminPass"     : {
+      "Default" : "TrendMicro01-",
+      "NoEcho" : true,
+      "Description" : "The Deep Security Manager administrator password. Must be 8-41 characters long and can only contain alphanumeric characters or the following special characters !^*-_+",
+      "Type"        : "String",
+      "MinLength"   : 8,
+      "MaxLength"   : 41,
+      "AllowedPattern" : "[a-zA-Z0-9!^*\\-_+]*",
+      "ConstraintDescription" : "Can only contain alphanumeric characters or the following special characters !^*-_+ Min length 8, max length 41"
+    },
+    "Build" : {
+      "Description" : "DSM in build",
+      "Type" : "String",
+      "Default" : "ST",
+      "AllowedValues" : [
+        "MT",
+        "ST"
+      ]
+    },
+    "baseDomain" : {
+      "Type" : "String"
+    },
+    "baseDomainHostedZoneId" : {
+      "Type" : "String"
+    },
+    "DSTenantId" : {
+      "Description" : "Team Deep Security Manager Tenant ID",
+      "Type" : "String",
+      "Default" : ""
+    },
+    "DSTenantPassword" : {
+      "Description" : "Team Deep Security Manager Tenant Password",
+      "Type" : "String",
+      "Default" : ""
+    },
+    "TeamPassword" : {
+      "Type" : "String"
+    },
+    "MtDsmFqdn" : {
+      "Type" : "String",
+      "Default" : "dsm.trenddemos.com"
+    },
+    "IncludeOsceChallenge" : {
+      "Type" : "String",
+      "Default" : "false"
+    },
+    "EventName" : {
+      "Type" : "String"
+    }
+  },
+  "Mappings" : {
+    "Parameters" : {
+      "CfnUrlPrefix" : {
+        "Prefix" : "https://s3.amazonaws.com/trend-micro-quick-start/v-tmtc/"
+      }
+    }
+  },
+  "Resources": {
+    "InfrastructureStack" : {
+      "Type" : "AWS::CloudFormation::Stack",
+      "Properties" : {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "BaseUrl"
+              },
+              "teamInfrastructure.template"
+            ]
+          ]
+        }
+      }
+    },
+    "DsDefStack" : {
+      "Type" : "AWS::CloudFormation::Stack",
+      "Properties" : {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "BaseUrl"
+              },
+              "teamInstancesDsDef.template"
+            ]
+          ]
+        },
+        "Parameters" : {
+          "TeamName": { "Ref": "TeamName" },
+          "AWSIKeyPairName" : { "Ref" : "AWSIKeyPairName" },
+          "AWSIVPC" : { "Fn::GetAtt" : [ "InfrastructureStack" , "Outputs.VPCID" ]},
+          "PublicSubnetID" : { "Fn::GetAtt" : [ "InfrastructureStack" , "Outputs.PublicSubnet1" ]},
+          "PrivateSubnetID" : { "Fn::GetAtt" : [ "InfrastructureStack" , "Outputs.PrivateSubnet1" ]},
+          "Build" : { "Ref": "Build" },
+          "DSTenantId" : {
+            "Fn::If" : [ "SingleTenant",
+              { "Ref" : "AWS::NoValue" },
+              { "Ref": "DSTenantId" }
+            ]
+          },
+          "DSTenantPassword" : {
+            "Fn::If" : [ "SingleTenant",
+              { "Ref" : "AWS::NoValue" },
+              { "Ref": "DSTenantPassword" }
+            ]
+          },
+          "DeepSecurityHeartbeat" : { "Ref": "AWS::NoValue" },
+          "TeamPassword" : { "Ref": "TeamPassword" },
+          "MtDsmFqdn" : { "Ref": "MtDsmFqdn" },
+          "EventName" : { "Ref": "EventName" },
+          "baseDomain" : { "Ref": "baseDomain" },
+          "baseDomainHostedZoneId" : { "Ref": "baseDomainHostedZoneId" }
+        }
+      }
+    }
+  },
+  "Conditions" : {
+    "SingleTenant" : {
+      "Fn::Equals" : [
+        { "Ref": "Build" },
+        "ST"
+      ]
+    }
+  }
+}

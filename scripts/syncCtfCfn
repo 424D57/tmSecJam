@@ -1,0 +1,1 @@
+aws s3 sync ~/git/tmSecJam/cfn/ s3://trendctf/tmSecJam/ --profile ctfUser --acl public-read
