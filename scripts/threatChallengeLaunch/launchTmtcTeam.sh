@@ -46,7 +46,7 @@ aws cloudformation create-stack --disable-rollback \
 --output text \
 --stack-name ${teamname}-${eventName}-TMTC \
 --capabilities CAPABILITY_IAM \
---template-url "https://s3.amazonaws.com/trendctf/cfn/threatChallengeTeam.template" \
+--template-url "https://s3.amazonaws.com/trendctf/tmSecJam/threatChallengeTeam.template" \
 --parameters \
 ParameterKey=TeamName,ParameterValue=${teamname} \
 ParameterKey=Build,ParameterValue=MT \
