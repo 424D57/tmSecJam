@@ -4,7 +4,7 @@
   "Parameters" : {
     "BaseUrl" : {
       "Type" : "String",
-      "Default" : "https://s3.amazonaws.com/trendctf/tmSecJam/"
+      "Default" : "https://s3.amazonaws.com/trendctf/tmsecjam2018/"
     },
     "AWSIKeyPairName" : {
       "Type" : "AWS::EC2::KeyPair::KeyName"

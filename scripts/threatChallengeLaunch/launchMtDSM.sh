@@ -19,13 +19,13 @@ aws cloudformation create-stack --disable-rollback \
 --stack-name ${stackname} \
 --output text \
 --capabilities CAPABILITY_IAM \
---template-url "https://s3.amazonaws.com/trend-micro-quick-start/v-tmSecJam/RHEL/MasterRH96.template" \
+--template-url "https://s3.amazonaws.com/trend-micro-quick-start/v-tmsecjam2018/templates/rhel/MasterRH96.template" \
 --parameters \
 ParameterKey=AWSIKeyPairName,ParameterValue=${keyPair} \
 ParameterKey=AWSIVPC,ParameterValue=${vpc} \
 ParameterKey=DBICAdminName,ParameterValue=t0Admin \
 ParameterKey=DBICAdminPassword,ParameterValue=${dsmT0Password} \
-ParameterKey=DBIRDSInstanceSize,ParameterValue=db.m4.xlarge \
+ParameterKey=DBIRDSInstanceSize,ParameterValue=db.m4.2xlarge \
 ParameterKey=DBIStorageAllocation,ParameterValue=200 \
 ParameterKey=DBISubnet1,ParameterValue=${dbSubnet1} \
 ParameterKey=DBISubnet2,ParameterValue=${dbSubnet2} \
@@ -38,10 +38,10 @@ ParameterKey=DSCAdminPassword,ParameterValue=${dsmT0Password} \
 ParameterKey=DSIMultiNode,ParameterValue=2 \
 ParameterKey=DSIPGUIPort,ParameterValue=443 \
 ParameterKey=DSIPHeartbeatPort,ParameterValue=4120 \
-ParameterKey=DSIPInstanceType,ParameterValue=m4.xlarge \
+ParameterKey=DSIPInstanceType,ParameterValue=m4.2xlarge \
 ParameterKey=DSIPLicenseKey,ParameterValue=${activationCode} \
 ParameterKey=DSISubnetID,ParameterValue=${dsmSubnet} \
 ParameterKey=DBPMultiAZ,ParameterValue=true \
-ParameterKey=CfnUrlPrefix,ParameterValue="https://s3.amazonaws.com/trend-micro-quick-start/v-tmSecJam/" \
+ParameterKey=CfnUrlPrefix,ParameterValue="https://s3.amazonaws.com/trend-micro-quick-start/v-tmsecjam2018/" \
 --tags \
 Key=CtfRole,Value=SharedServices
