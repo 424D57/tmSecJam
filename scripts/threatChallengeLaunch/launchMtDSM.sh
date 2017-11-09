@@ -19,7 +19,7 @@ aws cloudformation create-stack --disable-rollback \
 --stack-name ${stackname} \
 --output text \
 --capabilities CAPABILITY_IAM \
---template-url "https://s3.amazonaws.com/trend-micro-quick-start/v-tmsecjam2018/templates/rhel/MasterRH96.template" \
+--template-url "https://s3.amazonaws.com/trend-micro-quick-start/v-tmsecjam2018/templates/rhel/MasterRH.template" \
 --parameters \
 ParameterKey=AWSIKeyPairName,ParameterValue=${keyPair} \
 ParameterKey=AWSIVPC,ParameterValue=${vpc} \
