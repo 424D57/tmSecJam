@@ -81,7 +81,7 @@
   "Mappings" : {
     "AMIs" : {
       "us-east-1" : {
-        "atk" : "ami-3ae16f2c",
+        "atk" : "ami-c4ce74be",
         "defvtm" : "ami-a4e465b2"
       }
     }
